@@ -20,7 +20,6 @@ int main(int argc, const char * argv[]) {
     q1.push(temp);
     q1.push("lol");
     
-    
     cout << q1.front() << endl;
     cout << q1.back() << endl;
 

@@ -59,14 +59,16 @@ public:
     }
     
     ~Queue() {
-        Node* next = head;
+        /*Node* next = head;
         for(int i=0; i < len; i++) {
             Node* temp = next->next;
 
             delete next;
             
             next = temp;
-        }
+        }*/
+        
+        for (; len > 0; pop()) {}
     }
     
     void push(T elem) {
@@ -92,7 +94,9 @@ public:
         
         Node* temp = head;
         head = temp->next;
-        head->prev = NULL;
+        if (head) {
+            head->prev = NULL;
+        }
         
         len--;
         
