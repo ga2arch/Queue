@@ -20,9 +20,7 @@ struct empty: public std::runtime_error {
 template <typename T>
 class Queue {
     
-    class Node {
-        
-    public:
+    struct Node {
         T* elem;
         Node* next;
         Node* prev;
@@ -76,11 +74,11 @@ public:
         Node* node = new Node(p_elem);
 
         if (!head) {
-            head = node;  // [1]    [1]
+            head = node;
             last = node;
             
         } else {
-            last->next = node; // [1]-[2]  [1]-[2]
+            last->next = node;
             node->prev = last;
             
             last = node;

@@ -13,12 +13,12 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
 
-    int temp = 2;
+    string temp = "ciao";
     
-    Queue<int> q1;
+    Queue<string> q1;
     
-    q1.push(1);
     q1.push(temp);
+    q1.push("lol");
     
     
     cout << q1.front() << endl;
