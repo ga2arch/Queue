@@ -20,7 +20,9 @@ struct empty: public std::runtime_error {
 template <typename T>
 class Queue {
     
-    struct Node {
+    class Node {
+        
+    public:
         T* elem;
         Node* next;
         Node* prev;
@@ -29,7 +31,7 @@ class Queue {
         Node(T* elem): elem(elem) {}
         
         ~Node() {
-            if (elem) delete elem;
+            delete elem;
         }
     };
     
