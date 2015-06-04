@@ -7,9 +7,20 @@
 //
 
 #include <iostream>
+#include "Queue.h"
+
+using namespace std;
 
 int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
+
+    string temp = "ciao";
+    
+    Queue<string> q1;
+    
+    //q1.push(temp);
+    //q1.push("lol");
+    
+    cout << q1.front() << endl;
+    cout << q1.back() << endl;
+
 }
