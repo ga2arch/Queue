@@ -20,69 +20,78 @@ struct empty: public std::runtime_error {
 template <typename T>
 class Queue {
     
+    struct Node {
+        T* elem;
+        Node* next;
+        Node* prev;
+        
+        Node(): elem(NULL), next(NULL), prev(NULL) {}
+        Node(T* elem): elem(elem) {}
+        
+        ~Node() {
+            if (elem) delete elem;
+        }
+    };
+    
 public:
-    Queue(): _queue(NULL), len(0) {}
+    Queue(): head(NULL), last(NULL), len(0) {}
     
     Queue(const Queue<T>& q) {
-        if (_queue) delete[] _queue;
-        
-        _queue = new T[q.size()];
-        
-        for(int i=0; i < q.size(); i++) {
-            _queue[i] = q._queue[i];
-        }
-        
         len = q.size();
         
-        return;
+        for(int i=0; i < len; i++) {
+            push(*q.front());
+            q.pop();
+        }
     }
     
     Queue& operator=(const Queue<T>& q) {
-        if (_queue) delete[] _queue;
-        
-        _queue = new T[q.length()];
-        
-        for(int i=0; i < q.length(); i++) {
-            _queue[i] = q._queue[i];
+        for(int i=0; i < len; i++) {
+            pop();
         }
         
         len = q.size();
         
-        return;
+        for(int i=0; i < len; i++) {
+            push(*q.front());
+            q.pop();
+        }
     }
     
     ~Queue() {
-        delete[] _queue;
+        for(int i=0; i < len; i++) {
+            pop();
+        }
     }
     
     void push(T elem) {
-        T* temp = new T[++len]; // 1
-        
-        for(int i=0; i < len-1; i++) { // 0 < 0
-            temp[i] = _queue[i];
+        T* p_elem = new T(elem);
+
+        if (!head) {
+            Node* node = new Node(p_elem);
+            head = node;
+            last = node;
+            
+        } else {
+            Node* node = new Node(p_elem);
+            last->next = node;
+            node->prev = last;
+            
+            last = node;
         }
         
-        temp[len-1] = elem; // 0
-        
-        if (_queue) delete[] _queue;
-        _queue = temp;
-        
-        return;
+        len++;
     }
     
     void pop() {
         if (!len) throw empty();
         
-        T* temp = new T[--len]; // 4
+        Node* temp = head;
+        head = temp->next;
         
-        for(int i=1; i < len; i++) { //1 - 4
-            temp[i-1] = _queue[i]; // 0 - 1 - 2 - 3
-        }
+        len--;
         
-        delete[] _queue;
-        _queue = temp;
-        
-        return;
+        delete temp;
     }
     
     size_t size() const {
@@ -92,18 +101,19 @@ public:
     T& front() {
         if (!len) throw empty();
 
-        return _queue[0];
+        return *head->elem;
     }
     
     T& back() {
         if (!len) throw empty();
 
-        return _queue[len-1];
+        return *last->elem;
     }
     
 private:
     size_t len;
-    T* _queue;
+    Node* head;
+    Node* last;
     
 };
 
