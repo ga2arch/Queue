@@ -31,7 +31,7 @@ class Queue {
         Node(T* elem): elem(elem), next(NULL), prev(NULL) {}
         
         ~Node() {
-            if (elem) delete elem;
+            delete elem;
         }
     };
     
@@ -63,9 +63,11 @@ public:
     ~Queue() {
         Node* next = head;
         for(int i=0; i < len; i++) {
+            Node* temp = next->next;
+
             delete next;
             
-            next = next->next;
+            next = temp;
         }
     }
     
