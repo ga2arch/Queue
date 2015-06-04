@@ -66,15 +66,14 @@ public:
     
     void push(T elem) {
         T* p_elem = new T(elem);
+        Node* node = new Node(p_elem);
 
         if (!head) {
-            Node* node = new Node(p_elem);
-            head = node;
+            head = node;  // [1]    [1]
             last = node;
             
         } else {
-            Node* node = new Node(p_elem);
-            last->next = node;
+            last->next = node; // [1]-[2]  [1]-[2]
             node->prev = last;
             
             last = node;
@@ -88,6 +87,7 @@ public:
         
         Node* temp = head;
         head = temp->next;
+        head->prev = NULL;
         
         len--;
         
