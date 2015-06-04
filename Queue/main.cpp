@@ -20,7 +20,11 @@ int main(int argc, const char * argv[]) {
     q1.push(temp);
     q1.push("lol");
     
-    cout << q1.front() << endl;
+    Queue<string> q2;
+    
+    q2 = q1;
+    
+    cout << q2.front() << endl;
     cout << q1.back() << endl;
 
 }

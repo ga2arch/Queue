@@ -37,38 +37,23 @@ public:
     Queue(): head(NULL), last(NULL), len(0) {}
     
     Queue(const Queue<T>& q) {
-        len = q.size();
-        
-        for(int i=0; i < len; i++) {
-            push(*q.front());
-            q.pop();
+        for(int i=0; i < q.size(); i++) {
+            push(q.front());
         }
     }
     
     Queue& operator=(const Queue<T>& q) {
-        for(int i=0; i < len; i++) {
-            pop();
+        for(; len > 0; pop()) {}
+
+        for(int i=0; i < q.size(); i++) {
+            push(q.front());
         }
         
-        len = q.size();
-        
-        for(int i=0; i < len; i++) {
-            push(*q.front());
-            q.pop();
-        }
+        return *this;
     }
     
     ~Queue() {
-        /*Node* next = head;
-        for(int i=0; i < len; i++) {
-            Node* temp = next->next;
-
-            delete next;
-            
-            next = temp;
-        }*/
-        
-        for (; len > 0; pop()) {}
+        for(; len > 0; pop()) {}
     }
     
     void push(T elem) {
@@ -107,13 +92,13 @@ public:
         return len;
     }
     
-    T& front() {
+    T& front() const {
         if (!len) throw empty();
 
         return *head->elem;
     }
     
-    T& back() {
+    T& back() const {
         if (!len) throw empty();
 
         return *last->elem;
