@@ -28,10 +28,10 @@ class Queue {
         Node* prev;
         
         Node(): elem(NULL), next(NULL), prev(NULL) {}
-        Node(T* elem): elem(elem) {}
+        Node(T* elem): elem(elem), next(NULL), prev(NULL) {}
         
         ~Node() {
-            delete elem;
+            if (elem) delete elem;
         }
     };
     
@@ -61,8 +61,11 @@ public:
     }
     
     ~Queue() {
+        Node* next = head;
         for(int i=0; i < len; i++) {
-            pop();
+            delete next;
+            
+            next = next->next;
         }
     }
     
