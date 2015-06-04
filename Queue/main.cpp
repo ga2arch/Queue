@@ -22,6 +22,8 @@ int main(int argc, const char * argv[]) {
     
     Queue<string> q2;
     
+    q2.push("lel");
+    
     q2 = q1;
     
     cout << q2.front() << endl;

@@ -75,7 +75,7 @@ public:
     }
     
     void pop() {
-        if (!len) throw empty();
+        if (!size()) throw empty();
         
         Node* temp = head;
         head = temp->next;
@@ -93,13 +93,13 @@ public:
     }
     
     T& front() const {
-        if (!len) throw empty();
+        if (!size()) throw empty();
 
         return *head->elem;
     }
     
     T& back() const {
-        if (!len) throw empty();
+        if (!size()) throw empty();
 
         return *last->elem;
     }
