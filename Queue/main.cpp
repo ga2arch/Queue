@@ -7,17 +7,19 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "Queue.h"
 
 using namespace std;
 
 int main(int argc, const char * argv[]) {
-
-    Queue<int> q1;
-    q1.push(1);
-    q1.push(2);
     
-    for (auto n: q1) {
+    Queue<string> q1;
+    q1.push("ciao");
+    q1.push("come");
+    
+    transformif(q1, [](string x){ return x == "ciao"; }, [](string x){ return "bella"; });
+    
+    for (auto n: q1)
         cout << n << endl;
-    }
 }

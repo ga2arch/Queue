@@ -20,6 +20,7 @@ struct empty: public std::runtime_error {
 template <typename T>
 class Queue {
     
+public:
     struct Node {
         T* elem;
         Node* next;
@@ -33,7 +34,6 @@ class Queue {
         }
     };
     
-public:
     class const_iterator;
     
     class iterator {
@@ -235,6 +235,12 @@ public:
         }
     }
     
+    template <typename Iterator>
+    Queue(Iterator begin, Iterator end) {
+        for (; begin != end; begin++)
+            push(*begin);
+    }
+    
     Queue& operator=(const Queue<T>& q) {
         for(; len > 0; pop()) {}
 
@@ -336,5 +342,15 @@ private:
     Node* last;
     
 };
+
+template <typename T, typename P, typename F>
+void transformif(Queue<T>& q, P pred, F func) {
+    
+    for (T& elem: q) {
+        if (pred(elem)) {
+            elem = func(elem);
+        }
+    }
+}
 
 #endif /* defined(__Queue__Queue__) */
