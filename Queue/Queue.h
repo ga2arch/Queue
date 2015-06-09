@@ -38,10 +38,9 @@ public:
     struct Node {
         T* elem;
         Node* next;
-        Node* prev;
         
-        Node(): elem(NULL), next(NULL), prev(NULL) {}
-        Node(T* elem): elem(elem), next(NULL), prev(NULL) {}
+        Node(): elem(NULL), next(NULL) {}
+        Node(T* elem): elem(elem), next(NULL) {}
         
         ~Node() {
             delete elem;
@@ -279,7 +278,7 @@ public:
             
         } else {
             last->next = node;
-            node->prev = last;
+            //node->prev = last;
             
             last = node;
         }
@@ -292,9 +291,6 @@ public:
         
         Node* temp = head;
         head = temp->next;
-        if (head) {
-            head->prev = NULL;
-        }
         
         len--;
         
