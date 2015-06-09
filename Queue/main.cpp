@@ -62,8 +62,143 @@ void test_push_pop_complex() {
     cout << "PASSED" << endl;
 }
 
+void test_copy_ctor_primitive() {
+    cout << "COPY CTOR: ";
+    
+    Queue<int> q1;
+    
+    q1.push(1);
+    q1.push(2);
+    q1.push(3);
+    
+    Queue<int> q2(q1);
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+void test_copy_ctor_complex() {
+    cout << "COPY CTOR: ";
+    
+    Queue<string> q1;
+    
+    q1.push("ciao");
+    q1.push("come");
+    q1.push("va");
+    
+    Queue<string> q2(q1);
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+void test_copy_assign_primitive() {
+    cout << "COPY ASSIGN: ";
+    
+    Queue<int> q1;
+    
+    q1.push(1);
+    q1.push(2);
+    q1.push(3);
+    
+    Queue<int> q2 = q1;
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+void test_copy_assign_complex() {
+    cout << "COPY ASSIGN: ";
+    
+    Queue<string> q1;
+    
+    q1.push("ciao");
+    q1.push("come");
+    q1.push("va");
+    
+    Queue<string> q2 = q1;
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+void test_from_iter_primitive() {
+    cout << "FROM ITER: ";
+    
+    vector<int> v{1,2,3};
+    
+    queue<int> q1;
+    
+    q1.push(1);
+    q1.push(2);
+    q1.push(3);
+    
+    Queue<int> q2(v.begin(), v.end());
+        
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+void test_from_iter_complex() {
+    cout << "FROM ITER: ";
+    
+    vector<string> v{"ciao", "come", "va"};
+    
+    queue<string> q1;
+    
+    q1.push("ciao");
+    q1.push("come");
+    q1.push("va");
+    
+    Queue<string> q2(v.begin(), v.end());
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+
 int main(int argc, const char * argv[]) {
     
     test_push_pop_primitive();
+    test_push_pop_complex();
+    
+    test_copy_ctor_primitive();
+    test_copy_ctor_complex();
+    
+    test_from_iter_primitive();
+    test_from_iter_complex();
+    
+    test_copy_assign_primitive();
+    test_copy_assign_complex();
     
 }

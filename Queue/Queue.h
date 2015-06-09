@@ -243,14 +243,14 @@ public:
     
     Queue(): head(NULL), last(NULL), len(0) {}
     
-    Queue(const Queue<T>& q) {
-        for(int i=0; i < q.size(); i++) {
-            push(q.front());
+    Queue(const Queue<T>& q): head(NULL), last(NULL), len(0) {
+        for (typename Queue<T>::const_iterator itr = q.begin(); itr != q.end(); itr++) {
+            push(*itr);
         }
     }
     
     template <typename Iterator>
-    Queue(Iterator begin, Iterator end) {
+    Queue(Iterator begin, Iterator end): head(NULL), last(NULL), len(0) {
         for (; begin != end; begin++)
             push(*begin);
     }
