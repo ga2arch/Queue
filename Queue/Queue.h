@@ -278,8 +278,6 @@ public:
             
         } else {
             last->next = node;
-            //node->prev = last;
-            
             last = node;
         }
         
@@ -356,9 +354,9 @@ private:
 template <typename T, typename P, typename F>
 void transformif(Queue<T>& q, P pred, F func) {
     
-    for (T& elem: q) {
-        if (pred(elem)) {
-            elem = func(elem);
+    for (typename Queue<T>::iterator itr = q.begin(); itr != q.end(); ++itr) {
+        if (pred(*itr)) {
+            *itr = func(*itr);
         }
     }
 }

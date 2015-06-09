@@ -186,6 +186,67 @@ void test_from_iter_complex() {
     cout << "PASSED" << endl;
 }
 
+bool pred_primitive(int x) {
+    return x < 3;
+}
+
+int func_primitive(int x) {
+    return x*2;
+}
+
+void test_transformif_primitive() {
+    cout << "TRANSFORMIF: ";
+
+    vector<int> v{2,4,3};
+    Queue<int> q1;
+    
+    q1.push(1);
+    q1.push(2);
+    q1.push(3);
+    
+    Queue<int> q2(v.begin(), v.end());
+    
+    transformif(q1, pred_primitive, func_primitive);
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
+bool pred_complex(string x) {
+    return x == "ciao";
+}
+
+string func_complex(string x) {
+    return "hello";
+}
+
+void test_transformif_complex() {
+    cout << "TRANSFORMIF: ";
+    
+    vector<string> v{"hello","come"};
+    Queue<string> q1;
+    
+    q1.push("ciao");
+    q1.push("come");
+    
+    Queue<string> q2(v.begin(), v.end());
+    
+    transformif(q1, pred_complex, func_complex);
+    
+    while (q1.size() > 0) {
+        assert(q1.front() == q2.front());
+        q1.pop();
+        q2.pop();
+    }
+    
+    cout << "PASSED" << endl;
+}
+
 
 int main(int argc, const char * argv[]) {
     
@@ -201,4 +262,6 @@ int main(int argc, const char * argv[]) {
     test_copy_assign_primitive();
     test_copy_assign_complex();
     
+    test_transformif_primitive();
+    test_transformif_complex();
 }
