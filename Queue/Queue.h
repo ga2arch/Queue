@@ -34,6 +34,199 @@ class Queue {
     };
     
 public:
+    class const_iterator;
+    
+    class iterator {
+        //
+    public:
+        typedef std::forward_iterator_tag iterator_category;
+        typedef T                         value_type;
+        typedef ptrdiff_t                 difference_type;
+        typedef value_type*               pointer;
+        typedef value_type&               reference;
+        
+        /**
+         Copy constructor
+         @param other reference to the iterator to copy.
+         */
+        iterator(const iterator &other) {
+            head = other.head;
+        }
+        
+        /**
+         Assignment
+         @param other reference to the iterator to copy.
+         */
+        iterator& operator=(const iterator &other) {
+            head = other.head;
+            return *this;
+        }
+        
+        /**
+         Dereference pointer
+         */
+        reference operator*() const {
+            return *head->elem;
+        }
+        
+        /**
+         Return pointer
+         @returns pointer to the current element.
+         */
+        pointer operator->() const {
+            return head->elem;
+        }
+        
+        /**
+         Post-increment operator;
+         @returns iterator not incremented;
+         */
+        iterator operator++(int) {
+            head = head->next;
+            return iterator(head);
+        }
+        
+        /**
+         Pre-increment operator;
+         @returns iterator incremented;
+         */
+        iterator& operator++() {
+            head = head->next;
+            return *this;
+        }
+        
+        /**
+         Equality operator, check if the two iterators point to the same element
+         @param other reference to the other iterator
+         */
+        bool operator==(const iterator &other) const {
+            return head == other.head;
+        }
+        
+        /**
+         Inequality operator, check iif the two iterators
+         don't point to the same element
+         @param other reference to the other iterator
+         */
+        bool operator!=(const iterator &other) const {
+            return head != other.head;
+        }
+        
+        friend class const_iterator;
+        
+        /**
+         Equality operator, check if the two iterators point to the same element.
+         @param other reference to the other const_iterator
+         */
+        bool operator==(const const_iterator &other) const {
+            return head == other.head;
+        }
+        
+        /**
+         Inequality operator, check if the two iterators
+         don't point to the same element.
+         @param other reference to the other const_iterator
+         */
+        bool operator!=(const const_iterator &other) const {
+            return head != other.head;
+        }
+        
+        
+    private:
+        Node* head;
+        size_t pos;
+        
+        friend class Queue;
+        
+        explicit iterator(Node* h): head(h), pos(0) {}
+        explicit iterator(Node* h, size_t p): head(h), pos(p) {}
+
+    };
+    
+    class const_iterator {
+        //
+    public:
+        typedef std::forward_iterator_tag iterator_category;
+        typedef const T                   value_type;
+        typedef ptrdiff_t                 difference_type;
+        typedef value_type*               pointer;
+        typedef value_type&               reference;
+        
+        /**
+         Copy constructor
+         @param other reference to the iterator to copy.
+         */
+        const_iterator(const iterator &other) {
+            head = other.head;
+        }
+        
+        /**
+         Assignment
+         @param other reference to the iterator to copy.
+         */
+        const_iterator& operator=(const iterator &other) {
+            head = other.head;
+            return *this;
+        }
+        
+        /**
+         Dereference pointer
+         */
+        reference operator*() const {
+            return *head->elem;
+        }
+        
+        /**
+         Return pointer
+         @returns pointer to the current element.
+         */
+        pointer operator->() const {
+            return head->elem;
+        }
+        
+        /**
+         Post-increment operator;
+         @returns iterator not incremented;
+         */
+        const_iterator operator++(int) {
+            head = head->next;
+            return iterator(head);
+        }
+        
+        /**
+         Pre-increment operator;
+         @returns iterator incremented;
+         */
+        const_iterator& operator++() {
+            head = head->next;
+            return *this;
+        }
+        
+        /**
+         Equality operator, check if the two iterators point to the same element
+         @param other reference to the other iterator
+         */
+        bool operator==(const const_iterator &other) const {
+            return head == other.head;
+        }
+        
+        /**
+         Inequality operator, check iif the two iterators
+         don't point to the same element
+         @param other reference to the other iterator
+         */
+        bool operator!=(const const_iterator &other) const {
+            return head != other.head;
+        }
+        
+    private:
+        Node* head;
+        
+        friend class Queue;
+        
+        const_iterator(Node* h): head(h) {}
+    };
+    
     Queue(): head(NULL), last(NULL), len(0) {}
     
     Queue(const Queue<T>& q) {
@@ -102,6 +295,39 @@ public:
         if (!size()) throw empty();
 
         return *last->elem;
+    }
+    
+    /**
+     Return the const_iterator, pointing at the first element
+     @returns the const_iterator
+     */
+    iterator begin() {
+        return iterator(head);
+    }
+    
+    /**
+     Return the iterator, pointing at the last element
+     @returns the iterator
+     */
+    iterator end() {
+        return iterator(last->next);
+    }
+    
+    
+    /**
+     Return the iterator, pointing at the first element
+     @returns the const_iterator
+     */
+    const_iterator begin() const {
+        return iterator(head);
+    }
+    
+    /**
+     Return the const_iterator, pointing at the last element
+     @returns the const_iterator
+     */
+    const_iterator end() const {
+        return iterator(last->next);
     }
     
 private:

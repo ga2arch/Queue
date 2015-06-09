@@ -13,20 +13,11 @@ using namespace std;
 
 int main(int argc, const char * argv[]) {
 
-    string temp = "ciao";
+    Queue<int> q1;
+    q1.push(1);
+    q1.push(2);
     
-    Queue<string> q1;
-    
-    q1.push(temp);
-    q1.push("lol");
-    
-    Queue<string> q2;
-    
-    q2.push("lel");
-    
-    q2 = q1;
-    
-    cout << q2.front() << endl;
-    cout << q1.back() << endl;
-
+    for (auto n: q1) {
+        cout << n << endl;
+    }
 }
