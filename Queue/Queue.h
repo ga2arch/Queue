@@ -20,6 +20,20 @@ struct empty: public std::runtime_error {
 template <typename T>
 class Queue {
     
+private:
+    /**
+     Comodity function to easily display the content of a SparseMatrix.
+     @param os stream to write on
+     @param sm reference of the matrix to write
+     @return output stream
+     */
+    friend std::ostream& operator<<(std::ostream &os, const Queue &q) {
+        for (const T& elem: q) {
+            os << elem << "\n";
+        }
+        return os;
+    }
+    
 public:
     struct Node {
         T* elem;

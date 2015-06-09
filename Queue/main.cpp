@@ -20,6 +20,5 @@ int main(int argc, const char * argv[]) {
     
     transformif(q1, [](string x){ return x == "ciao"; }, [](string x){ return "bella"; });
     
-    for (auto n: q1)
-        cout << n << endl;
+    cout << q1;
 }
