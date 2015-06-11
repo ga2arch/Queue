@@ -240,20 +240,37 @@ public:
         const_iterator(Node* h): head(h) {}
     };
     
+    
+    /**
+     Costructor
+     */
     Queue(): head(NULL), last(NULL), len(0) {}
     
+    /**
+     Copy Costructor
+     @param q Queue to copy
+     */
     Queue(const Queue<T>& q): head(NULL), last(NULL), len(0) {
         for (typename Queue<T>::const_iterator itr = q.begin(); itr != q.end(); itr++) {
             push(*itr);
         }
     }
     
+    /**
+     Costructor from iterator pair
+     @param begin first iterator
+     @param end second iterator
+     */
     template <typename Iterator>
     Queue(Iterator begin, Iterator end): head(NULL), last(NULL), len(0) {
         for (; begin != end; begin++)
             push(*begin);
     }
     
+    /**
+     Assignment operator
+     @param q Queue
+     */
     Queue& operator=(const Queue<T>& q) {
         for(; len > 0; pop()) {}
 
@@ -264,10 +281,17 @@ public:
         return *this;
     }
     
+    /**
+     Decostructor
+     */
     ~Queue() {
         for(; len > 0; pop()) {}
     }
     
+    /**
+     Put an element at the top of the queue
+     @param elem T
+     */
     void push(T elem) {
         T* p_elem = new T(elem);
         Node* node = new Node(p_elem);
@@ -284,6 +308,9 @@ public:
         len++;
     }
     
+    /**
+     Pop an element from the top of the queue
+     */
     void pop() {
         if (!size()) throw empty();
         
@@ -295,16 +322,26 @@ public:
         delete temp;
     }
     
+    /**
+     Returns the number of element in the queue
+     @returns size_t
+     */
     size_t size() const {
         return len;
     }
     
+    /**
+     Returns a reference to the first element of the queue
+     */
     T& front() const {
         if (!size()) throw empty();
 
         return *head->elem;
     }
     
+    /**
+     Returns a reference to the last element of the queue
+     */
     T& back() const {
         if (!size()) throw empty();
 
@@ -351,6 +388,13 @@ private:
     
 };
 
+/**
+ Take a queue and two functions, returns a modified queue where the elements
+ that pass the first function get modified by the second
+ @param q Queue
+ @param p The function that select the elements to modify
+ @param f The function that modify an element
+ */
 template <typename T, typename P, typename F>
 void transformif(Queue<T>& q, P pred, F func) {
     

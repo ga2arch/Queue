@@ -249,19 +249,18 @@ void test_transformif_complex() {
 
 
 int main(int argc, const char * argv[]) {
-    
+    cout << "== TESTING PRIMITIVE TYPES ==\n" << endl;
     test_push_pop_primitive();
-    test_push_pop_complex();
-    
     test_copy_ctor_primitive();
-    test_copy_ctor_complex();
-    
     test_from_iter_primitive();
-    test_from_iter_complex();
-    
     test_copy_assign_primitive();
-    test_copy_assign_complex();
-    
     test_transformif_primitive();
+    
+    cout << "\n== TESTING COMPLEX TYPES ==\n" << endl;
+    
+    test_push_pop_complex();
+    test_copy_ctor_complex();
+    test_from_iter_complex();
+    test_copy_assign_complex();
     test_transformif_complex();
 }
