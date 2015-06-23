@@ -203,12 +203,9 @@ int main(int argc, const char * argv[]) {
     
     cout << "\n== TESTING COMPLEX TYPES ==\n" << endl;
     
-    //test_push_pop_complex();
-    //test_copy_ctor_complex();
-    //test_from_iter_complex();
-    //test_copy_assign_complex();
+    test_push_pop_complex();
+    test_copy_ctor_complex();
+    test_from_iter_complex();
+    test_copy_assign_complex();
     //test_transformif_complex();
-    
-    t();
- 
 }
