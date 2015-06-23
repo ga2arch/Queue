@@ -12,6 +12,7 @@
 #include <stdio.h>
 #include <cstddef>
 #include <stdexcept>
+#include <type_traits>
 
 struct empty: public std::runtime_error {
     empty(): std::runtime_error("Queue is empty") {}
@@ -36,14 +37,25 @@ private:
     
 public:
     struct Node {
-        T* elem;
+        std::aligned_storage<sizeof(T)> data;
         Node* next;
         
-        Node(): elem(NULL), next(NULL) {}
-        Node(T* elem): elem(elem), next(NULL) {}
+        Node(): next(nullptr) {}
+        
+        Node(T const& t): next(nullptr) {
+            new (&data) T(t);
+        }
+        
+        Node(T&& t): next(nullptr) {
+            new (&data) T(std::move(t));
+        }
+        
+        T& elem() {
+            return *reinterpret_cast<T*>(&data);
+        }
         
         ~Node() {
-            delete elem;
+            reinterpret_cast<const T*>(&data)->~T();
         }
     };
     
@@ -79,7 +91,7 @@ public:
          Dereference pointer
          */
         reference operator*() const {
-            return *head->elem;
+            return head->elem();
         }
         
         /**
@@ -147,12 +159,11 @@ public:
         
     private:
         Node* head;
-        size_t pos;
         
         friend class Queue;
         
-        explicit iterator(Node* h): head(h), pos(0) {}
-        explicit iterator(Node* h, size_t p): head(h), pos(p) {}
+        explicit iterator(Node* h): head(h) {}
+        explicit iterator(Node* h, size_t p): head(h) {}
 
     };
     
@@ -186,7 +197,7 @@ public:
          Dereference pointer
          */
         reference operator*() const {
-            return *head->elem;
+            return head->elem();
         }
         
         /**
@@ -244,15 +255,15 @@ public:
     /**
      Costructor
      */
-    Queue(): head(NULL), last(NULL), len(0) {}
+    Queue(): head(nullptr), last(nullptr), len(0) {}
     
     /**
      Copy Costructor
      @param q Queue to copy
      */
-    Queue(const Queue<T>& q): head(NULL), last(NULL), len(0) {
-        for (typename Queue<T>::const_iterator itr = q.begin(); itr != q.end(); itr++) {
-            push(*itr);
+    Queue(const Queue<T>& q): head(nullptr), last(nullptr), len(0) {
+        for (const auto elem: q) {
+            push(elem);
         }
     }
     
@@ -262,7 +273,7 @@ public:
      @param end second iterator
      */
     template <typename Iterator>
-    Queue(Iterator begin, Iterator end): head(NULL), last(NULL), len(0) {
+    Queue(Iterator begin, Iterator end): head(nullptr), last(nullptr), len(0) {
         for (; begin != end; begin++)
             push(*begin);
     }
@@ -274,8 +285,8 @@ public:
     Queue& operator=(const Queue<T>& q) {
         for(; len > 0; pop()) {}
 
-        for(int i=0; i < q.size(); i++) {
-            push(q.front());
+        for(const auto elem: q) {
+            push(elem);
         }
         
         return *this;
@@ -289,12 +300,11 @@ public:
     }
     
     /**
-     Put an element at the top of the queue
+     Put an element in the queue as the last element
      @param elem T
      */
-    void push(T elem) {
-        T* p_elem = new T(elem);
-        Node* node = new Node(p_elem);
+    void push(const T elem) {
+        Node* node = new Node(elem);
 
         if (!head) {
             head = node;
@@ -314,7 +324,7 @@ public:
     void pop() {
         if (!size()) throw empty();
         
-        Node* temp = head;
+        auto temp = head;
         head = temp->next;
         
         len--;
@@ -336,7 +346,7 @@ public:
     T& front() const {
         if (!size()) throw empty();
 
-        return *head->elem;
+        return head->elem();
     }
     
     /**
@@ -345,7 +355,7 @@ public:
     T& back() const {
         if (!size()) throw empty();
 
-        return *last->elem;
+        return last->elem();
     }
     
     /**
@@ -364,13 +374,12 @@ public:
         return iterator(last->next);
     }
     
-    
     /**
      Return the iterator, pointing at the first element
      @returns the const_iterator
      */
     const_iterator begin() const {
-        return iterator(head);
+        return const_iterator(head);
     }
     
     /**
@@ -378,7 +387,7 @@ public:
      @returns the const_iterator
      */
     const_iterator end() const {
-        return iterator(last->next);
+        return const_iterator(last->next);
     }
     
 private:
@@ -387,22 +396,5 @@ private:
     Node* last;
     
 };
-
-/**
- Take a queue and two functions, returns a modified queue where the elements
- that pass the first function get modified by the second
- @param q Queue
- @param p The function that select the elements to modify
- @param f The function that modify an element
- */
-template <typename T, typename P, typename F>
-void transformif(Queue<T>& q, P pred, F func) {
-    
-    for (typename Queue<T>::iterator itr = q.begin(); itr != q.end(); ++itr) {
-        if (pred(*itr)) {
-            *itr = func(*itr);
-        }
-    }
-}
 
 #endif /* defined(__Queue__Queue__) */
