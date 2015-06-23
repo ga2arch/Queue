@@ -37,12 +37,12 @@ private:
     
 public:
     struct Node {
-        std::aligned_storage<sizeof(T)> data;
+        typename std::aligned_storage<sizeof(T), alignof(T)>::type data;
         Node* next;
         
         Node(): next(nullptr) {}
         
-        Node(T const& t): next(nullptr) {
+        Node(const T t): next(nullptr) {
             new (&data) T(t);
         }
         
@@ -396,5 +396,22 @@ private:
     Node* last;
     
 };
+
+/**
+ Take a queue and two functions, returns a modified queue where the elements
+ that pass the first function get modified by the second
+ @param q Queue
+ @param p The function that select the elements to modify
+ @param f The function that modify an element
+ */
+template <typename T, typename P, typename F>
+void transformif(Queue<T>& q, P pred, F func) {
+    
+    for (auto& elem: q) {
+        if (pred(elem)) {
+            elem = func(elem);
+        }
+    }
+}
 
 #endif /* defined(__Queue__Queue__) */
