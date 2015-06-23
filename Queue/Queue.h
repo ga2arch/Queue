@@ -47,11 +47,11 @@ private:
             new (&data) T(std::move(t));
         }
         
-        Node(const Node& n) =delete;
-        Node(Node&& n) =delete;
+        Node(const Node&) =delete;
+        Node(Node&&) =delete;
         
-        Node& operator=(const Node& n) =delete;
-        Node& operator=(Node&& n) =delete;
+        Node& operator=(const Node&) =delete;
+        Node& operator=(Node&&) =delete;
         
         T& elem() {
             return *reinterpret_cast<T*>(&data);
