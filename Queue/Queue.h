@@ -35,12 +35,9 @@ private:
         return os;
     }
     
-public:
     struct Node {
         typename std::aligned_storage<sizeof(T), alignof(T)>::type data;
         Node* next;
-        
-        Node(): next(nullptr) {}
         
         Node(const T t): next(nullptr) {
             new (&data) T(t);
@@ -49,6 +46,12 @@ public:
         Node(T&& t): next(nullptr) {
             new (&data) T(std::move(t));
         }
+        
+        Node(const Node& n) =delete;
+        Node(Node&& n) =delete;
+        
+        Node& operator=(const Node& n) =delete;
+        Node& operator=(Node&& n) =delete;
         
         T& elem() {
             return *reinterpret_cast<T*>(&data);
@@ -59,6 +62,7 @@ public:
         }
     };
     
+public:
     class const_iterator;
     
     class iterator {
