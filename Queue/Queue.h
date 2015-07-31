@@ -111,8 +111,9 @@ public:
          @returns iterator not incremented;
          */
         iterator operator++(int) {
+            auto temp = *this;
             head = head->next;
-            return iterator(head);
+            return temp;
         }
         
         /**
@@ -217,8 +218,9 @@ public:
          @returns iterator not incremented;
          */
         const_iterator operator++(int) {
+            auto temp = *this;
             head = head->next;
-            return iterator(head);
+            return temp;
         }
         
         /**
